@@ -1,53 +1,68 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Styled from "styled-components"
 import QuestionProgress from "../components/QuestionProgress"
 import Questions from "../components/Questions"
 import Star from "../components/Star"
 import { questions } from "../data/questions"
 const Challenge = () => {
-  const [questionNo, setQuestion] = useState(0)
-  const [givenAnswers, setGivenAnswer] = useState([])
+  const [questionNo, setQuestionNo] = useState(1)
+  const [givenAnswers, setGivenAnswers] = useState([])
+  const [correctAnswer, setCorrectAnswer] = useState(0)
+  const [inCorrectAnswer, setInCorrectAnswer] = useState(0)
+  const [min, setMin] = useState(0)
+  const [max, setMax] = useState(100)
   const [marks, setMarks] = useState(0)
   const [isVisible, setIsVisible] = useState("")
-
+  const percentage = Math.round(marks / givenAnswers.length * 100)
 
   const selectAnswer = (e) => {
-    setGivenAnswer([...givenAnswers, e])
+    setGivenAnswers([...givenAnswers, true])
     if (e === questions[questionNo].correct_answer) {
-      setQuestion(questionNo + 1)
-      setMarks(marks + 5)
       setIsVisible("correct")
-      setTimeout(() => {
-        setIsVisible("")
-      }, 1500);
-
+      setMarks(marks + 1)
+      setCorrectAnswer(correctAnswer + 1)
+      let min = (((correctAnswer + 1) / questions.length) * 100)
+      // let max = (((correctAnswer + 1 + (questions.length - givenAnswers.length)) / questions.length) * 100)
+      setMin(min)
+      setMax(max -5)
     } else {
+      let min = (((correctAnswer + 1) / questions.length) * 100)
+      // let max = (((correctAnswer + 1 + (questions.length - givenAnswers.length)) / questions.length) * 100)
+      setMin(min)
+      setMax(max -5)
       setIsVisible("incorrect")
-      console.log(isVisible)
-      setTimeout(() => {
-        setIsVisible("")
-      }, 1500);
-      setQuestion(questionNo + 1)
-
+      setInCorrectAnswer(inCorrectAnswer + 1)
     }
-    if (questionNo === questions.length - 1) {
-      alert(marks >= 75 ? "YOU WON" : "YOU LOST TRY AGAIN")
-      window.location.reload()
-    }
-
   }
+
+
+  const nextQuestion = () => {
+    setQuestionNo(questionNo + 1)
+    setIsVisible("")
+  }
+
+  useEffect(() => {
+    if (givenAnswers.length === questions.length - 1) {
+      alert(percentage >= 75 ? "YOU WON" : "YOU LOST TRY AGAIN")
+      window.location.reload()
+
+    }
+
+  }, [givenAnswers])
+
 
   return (
     <ChallengeWrapper>
-      <Progress value={givenAnswers.length} max={questions.length}></Progress>
-      <QuestionHeading>Question {givenAnswers.length} of {questions.length} </QuestionHeading>
+      <progress value={questionNo} className="question-progress" max={questions.length}></progress>
+      <QuestionHeading>Question {questionNo} of {questions.length} </QuestionHeading>
       <QuestionSmallHeading>Entertaimen: Board Games</QuestionSmallHeading>
-      <Star/>
-      <Questions selectAnswer={selectAnswer} questionNo={questionNo} />
+      <Star />
+      <Questions selectAnswer={selectAnswer} isVisible={isVisible} questionNo={questionNo} />
       {
-        isVisible && <Incorrect> {isVisible === "correct" ? "Correct Answer" : "InCorrect Answer"}</Incorrect>
+        isVisible && <Incorrect> {isVisible === "correct" ? "Correct" : "Sorry"}</Incorrect>
       }
-      <QuestionProgress marks={marks} />
+      {isVisible && <NextQuestion onClick={nextQuestion}>Next Question</NextQuestion>}
+      <QuestionProgress percentage={percentage} max={max} />
 
     </ChallengeWrapper>
 
@@ -77,17 +92,14 @@ font-size:20px;
 font-weight:bold;
 text-align:center;
 `
-const Progress = Styled.progress`
-width:100%;
-padding:15px;
-`
-const ScoreContainer = Styled.div`
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-top:40px;
-`
-const SingleScore = Styled.p`
-font-weight:bold;
+
+const NextQuestion = Styled.button`
+padding:12px 8px ;
+background-color:#000;
+color:white;
+border:1px solid #000;
+width:40%;
+margin-top:10px;
+
 
 `

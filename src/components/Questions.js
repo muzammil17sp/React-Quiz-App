@@ -1,22 +1,20 @@
 import Styled from "styled-components"
 import { questions } from "../data/questions"
+import { removeUnNecessaryCharacter } from "../helper/charcter"
 
-const Questions = ({selectAnswer,questionNo}) =>{
-  const removeUnNecessaryCharacter = (value) => {
-    return value.replaceAll("%", " ").replaceAll("20", " ").replaceAll("27", " ").replaceAll("3F", "").replaceAll("22", "")
+const Questions = ({ selectAnswer, questionNo, isVisible }) => {
 
-  }
-  return(
+  return (
     <div>
-    <Question>{removeUnNecessaryCharacter(questions[questionNo].question)}</Question>
-    <AnswersContainer>
-      {questions[questionNo].incorrect_answers.map((answer) => (
-        <Answer className="answer"  key={answer} onClick={() => selectAnswer(answer)}>{removeUnNecessaryCharacter(answer)}</Answer>
+      <Question>{removeUnNecessaryCharacter(questions[questionNo].question)}</Question>
+      <AnswersContainer>
+        {questions[questionNo].incorrect_answers.map((answer) => (
+          <Answer disabled={isVisible} className="answer" key={answer} onClick={() => selectAnswer(answer)}>{removeUnNecessaryCharacter(answer)}</Answer>
         ))}
-        <Answer className="answer" onClick={() => selectAnswer(questions[questionNo].correct_answer)}>{removeUnNecessaryCharacter(questions[questionNo].correct_answer)}</Answer>
+        <Answer disabled={isVisible} className="answer" onClick={() => selectAnswer(questions[questionNo].correct_answer)}>{removeUnNecessaryCharacter(questions[questionNo].correct_answer)}</Answer>
 
-    </AnswersContainer>
-  </div>
+      </AnswersContainer>
+    </div>
   )
 }
 export default Questions

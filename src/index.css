@@ -16,3 +16,30 @@ code {
   background-color: black;
   color:white;
 }
+.question-progress {
+  border: none;
+  width: 400px;
+  height: 30px;
+  border-radius: 10px;
+}
+
+.question-progress {
+  color: lightblue;
+}
+
+.question-progress::-moz-progress-bar {
+  background: lightcolor;
+}
+
+.question-progress::-webkit-progress-value {
+  background: grey;
+}
+
+.question-progress::-webkit-progress-bar {
+  background: white;
+}
+.answer-progress{
+  border: 1px solid #000;
+  overflow:hidden;
+  width:100%;
+}

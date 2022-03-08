@@ -1,25 +1,24 @@
 import Styled from "styled-components"
-const QuestionProgress = ({marks}) => {
-  return (<>
+import { questions } from "../data/questions"
+const QuestionProgress = ({percentage,max }) => {
+
+  return (<div>
     <ScoreContainer>
-      <SingleScore>Score: {marks} %</SingleScore>
-      <SingleScore>Max score 75%</SingleScore>
+      <SingleScore>Score: {percentage || 0} %</SingleScore>
+      <SingleScore>Max score {max}%</SingleScore>
     </ScoreContainer>
-    <Progress className="question-progress" value={marks} max={100}></Progress>
-  </>)
+   
+    <progress className="answer-progress question-progress" value={percentage} max={100}></progress>
+  </div>)
 }
 export default QuestionProgress
 const ScoreContainer = Styled.div`
 display:flex;
 align-items:center;
 justify-content:space-between;
-margin-top:40px;
+margin-top:10px;
 `
 const SingleScore = Styled.p`
 font-weight:bold;
+`
 
-`
-const Progress = Styled.progress`
-width:100%;
-padding:15px;
-`
