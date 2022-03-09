@@ -1,5 +1,3 @@
-import Styled from "styled-components"
-import { questions } from "../data/questions"
 const QuestionProgress = ({ percentage, max, min }) => {
     return (<>
         <div className="progress-bar-container">
