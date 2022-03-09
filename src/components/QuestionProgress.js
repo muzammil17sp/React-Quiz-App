@@ -1,24 +1,29 @@
 import Styled from "styled-components"
 import { questions } from "../data/questions"
-const QuestionProgress = ({percentage,max }) => {
-
-  return (<div>
-    <ScoreContainer>
-      <SingleScore>Score: {percentage || 0} %</SingleScore>
-      <SingleScore>Max score {max}%</SingleScore>
-    </ScoreContainer>
-   
-    <progress className="answer-progress question-progress" value={percentage} max={100}></progress>
-  </div>)
+const QuestionProgress = ({ percentage, max, min }) => {
+    return (<>
+        <div className="progress-bar-container">
+            <div className="progress-bar-titles">
+                <p>Score {parseInt(percentage)}%</p>
+                <p>Max Score {parseInt(max)}%</p>
+            </div>
+            <div className="progress-bar">
+                <div className="filler"
+                    style={{
+                        background: `
+                linear-gradient(
+                    to right, 
+                    #000 ${min}%, 
+                    #717171 ${min}%, 
+                    #717171 ${percentage}%,
+                    #D2D2D2 ${percentage}%,
+                    #D2D2D2 ${max}% ,
+                    #FFFFFF 0)`
+                    }} />
+            </div>
+        </div>
+    </>)
 }
 export default QuestionProgress
-const ScoreContainer = Styled.div`
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-top:10px;
-`
-const SingleScore = Styled.p`
-font-weight:bold;
-`
+
 
